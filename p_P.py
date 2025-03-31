@@ -8,12 +8,12 @@ headers = {
     "User-Agent": "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0"
 }
 
-def download(url):
-    resp = requests.get(url, stream=True)
-    r = open(r"/home/timofey/Documents/", "wb")
-    for value in resp.iter_content(1024*1024):
-        r.write(value)
-    r.close
+# def download(url):
+#     resp = requests.get(url, stream=True)
+#     r = open(r"/home/timofey/Documents/image/" + url.split("/")[-1], "wb")
+#     for value in resp.iter_content(1024*1024):
+#         r.write(value)
+#     r.close
 def get_soup(url):
     response = requests.get(url, headers=headers)
     sleep(3)
@@ -37,4 +37,5 @@ def array():
         url_img = 'https://scrapingclub.com' + data.find(
             'img', class_='card-img-top'
         ).get('src')
+        # download(url_img)
         yield name, price, text, url_img
