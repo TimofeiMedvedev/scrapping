@@ -7,7 +7,7 @@ headers = {
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/109.0"
 }
 
-response = requests.get('https://pro-kaminy.ru/katalog/pechi/pechi-kaminyi/fireway/pech-gunter.html', headers=headers)
+response = requests.get('https://pro-kaminy.ru/katalog/pechi/pechi-kaminyi/fireway/pech-chugunnaya-bruno-ii.html', headers=headers)
 soup = BeautifulSoup(response.text, 'lxml')
 data = soup.find('div', class_='page')
 img_url = data.find_all('img')
@@ -16,6 +16,11 @@ price = data.find('div', class_='price-val').find('span').text
 product_cod = data.find(
     'div', class_='product-code'
 ).text.lstrip('Код товара:')
+availability = data.find('div', class_='product-order-top').text.split()
+if 'наличии' in availability:
+    availability = '1'
+else:
+    availability = '0'
 img_urls_full = []
 for img in img_url:
     img_src = img.get('src')
@@ -24,7 +29,9 @@ for img in img_url:
         img_urls_full.append(img_new)
 img_urls_full_format = '; '.join(img_urls_full)
 characteristics = data.find_all('div', class_='features-list__row')
-dict_characteristics = {}
+dict_characteristics = {
+
+}
 for item_haracteristics in characteristics:
     item_key = item_haracteristics.find(
         'div', class_='features-list__title'
@@ -78,7 +85,7 @@ else:
 volume_room = ''.join(re.findall(r"\d+", dict_characteristics.get('Объем отапливаемого помещения:', ''))).rstrip('3')
 types_of_fuel = dict_characteristics.get('Виды твердого топлива:', '').strip()
 
-print(product_cod)
+print(len(dict_characteristics))
 
 # print(name + '\n' + price + '\n' + img_urls_full_format + '\n' + manufacturer +
 #       '\n' + country_manufacturer + '\n' + power + '\n' + kpd + '\n' +
@@ -86,7 +93,7 @@ print(product_cod)
 #       side_chimney + '\n' + area_of_the_room + '\n' + glass_on_the_door +
 #       '\n' + weight + '\n' + warranty + '\n' + width + '\n' + height + '\n' +
 #       depth + '\n' + diameter + '\n' + clean_gorenje + '\n' + volume_room + 
-#       '\n' + types_of_fuel)
+#       '\n' + types_of_fuel + '\n' + availability)
 
 # all_characteristics = characteristics.find_all('li')
 # list_characteristics = []
